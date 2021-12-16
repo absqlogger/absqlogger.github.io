@@ -1,0 +1,154 @@
+<!DOCTYPE HTML>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+        <title>Loading...</title>
+        <meta property="og:type" content="website">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Red+Hat+Text" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+        <style>
+            ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;   
+}
+
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #292828; 
+  border-radius: 2px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #262525; 
+}
+     
+img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+
+  
+      @font-face {
+  font-family: 'Red Hat Text';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/redhattext/v6/RrQCbohi_ic6B3yVSzGBrMx6ZI_cy1A6Ok2ML7hwZr_QcLVF.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+          
+@font-face {
+  font-family: 'Roboto Mono';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/robotomono/v13/L0xuDF4xlVMF-BfR8bXMIhJHg45mwgGEFl0_3vq_SeW4Ep0.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+
+hr { height: 1px;
+    border: 0; border-top: 1px solid white;
+    margin: 1em 0; padding: 0;
+width:50%;
+margin-left:25% !important; margin-right:25% !important; 
+}
+
+body {
+  font-family: "Red Hat Text";
+  font-weight: 400;
+  line-height: 1.6;
+  background-color: rgba(17,17,17,.04);
+  color: white;
+}
+
+
+
+main {
+ 
+  max-width: 1000px;
+  padding: 3rem 0 4rem;
+  margin: 2rem auto;
+
+}
+
+article {
+  max-width: 576px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  overflow-wrap: break-word;
+  background-color: #313131;
+  border-radius: 20px;
+  overflow:hidden;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+    </style>
+<script src="https://cdn.jsdelivr.net/npm/faunadb@latest/dist/faunadb.js"></script>
+    </head>
+    <body onload="start()" style="background-color:#323232">
+        <div style="text-align: center;">
+        <h1 id="info">Loading...</h1>
+        <h3 id="desc">Loading...</h3>
+        </div><br>
+<label id="test"></label>
+  </body>
+    <script>
+        var faunadb = window.faunadb
+  var q = faunadb.query
+  var client = new faunadb.Client({
+    secret: 'fnAEal0BqXAAwLecNTQaO4CXREXT-zzVC9Knp85g',
+    domain: 'db.eu.fauna.com',
+    scheme: 'https',
+  })
+
+function start(){
+var segments = window.location.href.split('?')
+let name = segments[1]
+
+client.query(
+  q.Get(
+    q.Match(q.Index('get_url'), name)
+  )
+)
+.then(function(ret) {
+    console.log(ret)
+        let data = ret.data.logs
+let html = ""
+const post = data.split("!!!newlog!!!")
+const posts = post.reverse()
+document.getElementById("info").innerHTML = ret.data.url + " | " + (posts.length - 1) + " Logs";
+document.title = "Viewing " + (posts.length - 1) + " logs for " + ret.data.url + " || AbsqLogger Beta"
+document.getElementById("desc").innerHTML = "<i>" + ret.data.desc + "</i>"
+console.log(posts)
+for (let i = 0; i < posts.length; i++) {
+if(posts[i].split("!!!time!!!")[0] == "" || posts[i].split("!!!time!!!")[0] == "undefined")
+{
+}
+else
+{
+    html = html + "<article><p style=\"text-align: center; font-size:14px\"><i>New log at <b>" + posts[i].split("!!!time!!!")[1] + "</b></i></p><hr><label style=\"vertical-align:middle; font-family:'Red Hat Text'; font-size:15px\">" + posts[i].split("!!!time!!!")[0].replace(/\n/g, "<br>") + "</label></article><br><br>"
+//console.log("Post: " + posts[i].split("!!!time!!!")[0] + "\nTime: " + posts[i].split("!!!time!!!")[1] + "\nUploader: " + posts[i].split("!!!uploader!!!")[1] + "\nPage Number: " + pagenumber)
+}
+}
+    document.getElementById("test").innerHTML = html;
+    
+})
+.catch(function(e){
+   document.getElementById("info").innerHTML = "404 | Page not found."
+   document.getElementById("desc").style.visibility = "hidden"
+});
+    
+    
+}
+      
+      
+      
+
+        
+
+    </script>
+</html>

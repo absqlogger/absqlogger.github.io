@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="https://fonts.googleapis.com/css?family=Red+Hat+Text" rel="stylesheet">
+      <script src="https://cdn.jsdelivr.net/npm/faunadb@latest/dist/faunadb.js"></script>
+
+    <title>AbsqLogger Beta || Create</title>
+  </head>
+<style>
+  @font-face {
+  font-family: 'Red Hat Text';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/redhattext/v6/RrQCbohi_ic6B3yVSzGBrMx6ZI_cy1A6Ok2ML7hwZr_QcLVF.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;   
+}
+
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #474747; 
+  border-radius: 2px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #4f4f4f; 
+}
+
+body {font-family: Red Hat Text;}
+* {box-sizing: border-box;}
+  
+  /* Full-width input fields */
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #303030;
+  caret-color: white;
+  color: white
+}
+
+input[type=text]:focus, input[type=password]:focus {
+  background-color: #636363;
+  outline: none;
+}
+
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+
+/* Set a style for all buttons */
+button {
+  background-color: #3d3d3d;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
+button:hover {
+  opacity:1;
+}
+
+/* Extra styles for the cancel button */
+.cancelbtn {
+  padding: 14px 20px;
+  background-color: #f44336;
+}
+
+/* Float cancel and signup buttons and add an equal width */
+.cancelbtn, .signupbtn {
+  float: left;
+  width: 50%;
+}
+
+/* Add padding to container elements */
+.container {
+  padding: 16px;
+}
+
+/* Clear floats */
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+/* Change styles for cancel button and signup button on extra small screens */
+@media screen and (max-width: 300px) {
+  .cancelbtn, .signupbtn {
+     width: 100%;
+  }
+}
+
+</style>
+<body onload="detectstuff()" style="background-color:#262626">
+
+<form style="border:1px solid #ccc">
+  <div class="container">
+    <h1 style="color:white">Create Info Logger</h1>
+    <p style="color:white">Create a wesbite that logs info.</p>
+    <hr>
+
+    <label style="color:white" for="url"><b>URL Ending</b></label>
+    <input maxlength="200" type="text" placeholder="Enter an Ending..." name="url" id="url" required>
+
+    <label style="color:white" for="redir"><b>Redirect URL</b></label>
+    <input  type="text" placeholder="Enter a URL..." name="redir" id="redir" required>
+    
+    <label style="color:white" for="desc"><b>Description</b></label>
+    <textarea maxlength="250" style="width: 100%; resize: vertical; font-family:'Red Hat Text'; padding: 15px; margin: 5px 0 22px 0; display: inline-block; border: none; background: #303030; caret-color: white; color: white" placeholder="Enter a Bio" name="desc" id="desc" required></textarea>
+  
+    <div class="clearfix">
+      <button type="button" onclick="savechanges()" class="signupbtn">Create</button>
+    </div>
+  </div>
+</form>
+  
+  
+
+
+<script>
+   var faunadb = window.faunadb
+  var q = faunadb.query
+  var client = new faunadb.Client({
+    secret: 'fnAEal0BqXAAwLecNTQaO4CXREXT-zzVC9Knp85g',
+    domain: 'db.eu.fauna.com',
+    scheme: 'https',
+  })
+
+  
+  
+  function savechanges(){
+    
+    client.query(
+  q.Get(
+    q.Match(q.Index('get_url'), document.getElementById("url").value)
+  )
+)
+.then(function(ret){ 
+     
+alert("This URL is taken!")
+
+})
+  
+.catch(function(e){
+
+
+
+  let date = new Date();
+    client.query(
+  q.Create(
+    q.Collection('ip-logging'),
+    { data: { url: document.getElementById("url").value.replace(/\s/g, ""), desc: document.getElementById("desc").value, redirect: document.getElementById("redir").value, logs:""} },
+  )
+)
+.then(function(ret){
+
+     alert("Success! The logs for this page will be publicly available at placeholder")
+      
+    })
+
+});
+
+    
+    
+  }
+  
+  
+  
+ 
+</script>
+
+</body>
+</html>

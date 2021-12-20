@@ -116,6 +116,13 @@ client.query(
 )
 .then(function(ret) {
     console.log(ret)
+    let password = prompt("Enter the password to this server: ")
+    if(password != ret.data.password)
+    {
+        history.back()
+    }
+    else
+    {
         let data = ret.data.logs
 let html = ""
 const post = data.split("!!!newlog!!!")
@@ -135,6 +142,7 @@ else
 }
 }
     document.getElementById("test").innerHTML = html;
+    }
     
 })
 .catch(function(e){

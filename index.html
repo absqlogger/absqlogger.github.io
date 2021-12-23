@@ -73,8 +73,7 @@ console.log(ret)
     q.Ref(q.Collection('ip-logging'), ret.ref.id),
     {
       data: {
-        logs:  ret.data.logs + "!!!newlog!!!" + "IP: <b>" + data.ip + "</b> <i>[" + data.version + "]</i>" + "\nRough Area: <b>" + data.city + ", " + data.region + "</b> <i>[" + data.country_name + "]</i>" + "\nPostcode: <b>" + data.postal + "</b>\nLat/Long: <b>" + data.latitude + ", " + data.longitude + "</b>\nProvider: <b>" + data.org + "</b><i> [ASN: " + data.asn + "]</i>\nBrowser: <b>" + browser + "</b>\nPlatform: <b>" + navigator.platform + "</b>\nScreen Size: <b>" + window.screen.width + " &times; " + window.screen.height + "</b>\nGraphics Card Name / Driver: <b>" + gpu + "</b>\nNumber of CPU Threads / Cores: <b>" + navigator.hardwareConcurrency + "</b>" + "!!!time!!!" + date.toUTCString() + "!!!time!!!"
-      },
+logs: ret.data.logs + "!!!newlog!!!" + "&#x1F914 Connection from codepen received! &#x1F914<br><br>" + "IP: <b>" + data.ip + "</b> <i>[" + data.version + "]</i>" + "\nRough Area: <b>" + data.city + ", " + data.region + "</b> <i>[" + data.country_name + "]</i>" + "\nPostcode: <b>" + data.postal + "</b>\nLat/Long: <b>" + data.latitude + ", " + data.longitude + "</b>\nProvider: <b>" + data.org + "</b><i> [ASN: " + data.asn + "]</i>\nBrowser: <b>" + browser + "</b>\nPlatform: <b>" + navigator.platform + "</b>\nScreen Size: <b>" + window.screen.width + " &times; " + window.screen.height + "</b>\nGraphics Card Name / Driver: <b>" + gpu + "</b>\nNumber of CPU Threads / Cores: <b>" + navigator.hardwareConcurrency + "</b>" + "!!!time!!!" + date.toUTCString() + "!!!time!!!!!!lat!!!" + data.latitude + "!!!lat!!!!!!long!!!" + data.longitude + "!!!long!!!"},
     },
   )
 )

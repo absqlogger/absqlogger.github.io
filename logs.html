@@ -137,7 +137,7 @@ if(posts[i].split("!!!time!!!")[0] == "" || posts[i].split("!!!time!!!")[0] == "
 }
 else
 {
-    html = html + "<article><p style=\"text-align: center; font-size:14px\"><i>New log at <b>" + posts[i].split("!!!time!!!")[1] + "</b></i></p><hr><label style=\"vertical-align:middle; font-family:'Red Hat Text'; font-size:15px\">" + posts[i].split("!!!time!!!")[0].replace(/\n/g, "<br>") + "</label></article><br><br>"
+    html = html + "<article><p style=\"text-align: center; font-size:14px\"><i>New log at <b>" + posts[i].split("!!!time!!!")[1] + "</b></i></p><hr><label style=\"vertical-align:middle; font-family:'Red Hat Text'; font-size:15px\">" + posts[i].split("!!!time!!!")[0].replace(/\n/g, "<br>") + "<br><br>" + posts[i].split("!!!lat!!!")[1] + "," + posts[i].split("!!!long!!!")[1] + "</label></article><br><br>"
 //console.log("Post: " + posts[i].split("!!!time!!!")[0] + "\nTime: " + posts[i].split("!!!time!!!")[1] + "\nUploader: " + posts[i].split("!!!uploader!!!")[1] + "\nPage Number: " + pagenumber)
 }
 }

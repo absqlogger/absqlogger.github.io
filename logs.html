@@ -110,6 +110,8 @@ article {
 function start(){
 var segments = window.location.href.split('?')
 let name = segments[1]
+let divid=0
+let coords = ""
 
 client.query(
   q.Get(
@@ -127,6 +129,7 @@ client.query(
     {
         let data = ret.data.logs
 let html = ""
+
 const post = data.split("!!!newlog!!!")
 const posts = post.reverse()
 document.getElementById("info").innerHTML = ret.data.url + " | " + (posts.length - 1) + " Logs";
@@ -139,24 +142,44 @@ if(posts[i].split("!!!time!!!")[0] == "" || posts[i].split("!!!time!!!")[0] == "
 }
 else
 {
-    html = html + "<article><p style=\"text-align: center; font-size:14px\"><i>New log at <b>" + posts[i].split("!!!time!!!")[1] + "</b></i></p><hr><label style=\"vertical-align:middle; font-family:'Red Hat Text'; font-size:15px\">" + posts[i].split("!!!time!!!")[0].replace(/\n/g, "<br>") + "<br><br>" + posts[i].split("!!!lat!!!")[1] + "," + posts[i].split("!!!long!!!")[1] + "</label><br><div id=\"map\" style=\"width:900px; height:580px\"></div></article><br><br>"
-    var mapOptions = {
-                    center: [17.385044, 78.486671],
-                    zoom: 10
+divid = divid + 1
+coords = coords + "!!!log!!!!!!lat!!!" + posts[i].split("!!!lat!!!")[1] + "!!!lat!!!!!!long!!!" + posts[i].split("!!!long!!!")[1] + "!!!long!!!!!!id!!!" + divid + "!!!id!!!"
+    html = html + "<article><p style=\"text-align: center; font-size:14px\"><i>New log at <b>" + posts[i].split("!!!time!!!")[1] + "</b></i></p><hr><label style=\"vertical-align:middle; font-family:'Red Hat Text'; font-size:15px\">" + posts[i].split("!!!time!!!")[0].replace(/\n/g, "<br>") + "</label><br><br><div id=\"map" + divid + "\" style=\"width: 100%; height:400px;\"></div></article><br><br>"
+  
+
+//console.log("Post: " + posts[i].split("!!!time!!!")[0] + "\nTime: " + posts[i].split("!!!time!!!")[1] + "\nUploader: " + posts[i].split("!!!uploader!!!")[1] + "\nPage Number: " + pagenumber)
+}
+}
+    document.getElementById("test").innerHTML = html;
+const datas = coords.split("!!!log!!!")
+console.log(datas)
+for (let i = 0; i < datas.length; i++) {
+if(datas[i].split("!!!lat!!!")[1] == undefined)
+{
+}
+else{
+
+var mapOptions = {
+                    center: [datas[i].split("!!!lat!!!")[1],datas[i].split("!!!long!!!")[1]],
+                    zoom: 15
                  }
+console.log(mapOptions)
                  
                  // Creating a map object
-                 var map = new L.map('map', mapOptions);
+                 var map = new L.map('map' + datas[i].split("!!!id!!!")[1], mapOptions);
                  
                  // Creating a Layer object
                  var layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
                  
                  // Adding layer to the map
                  map.addLayer(layer);
-//console.log("Post: " + posts[i].split("!!!time!!!")[0] + "\nTime: " + posts[i].split("!!!time!!!")[1] + "\nUploader: " + posts[i].split("!!!uploader!!!")[1] + "\nPage Number: " + pagenumber)
+                 L.marker([datas[i].split("!!!lat!!!")[1],datas[i].split("!!!long!!!")[1]]).addTo(map);
 }
+
+
 }
-    document.getElementById("test").innerHTML = html;
+
+
     }
     
 })

@@ -9,6 +9,13 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         <link href="https://fonts.googleapis.com/css?family=Red+Hat+Text" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+   integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+   crossorigin=""/>
+
+ <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+   crossorigin=""></script>
         <style>
             ::-webkit-scrollbar {
   width: 10px;
@@ -137,7 +144,20 @@ if(posts[i].split("!!!time!!!")[0] == "" || posts[i].split("!!!time!!!")[0] == "
 }
 else
 {
-    html = html + "<article><p style=\"text-align: center; font-size:14px\"><i>New log at <b>" + posts[i].split("!!!time!!!")[1] + "</b></i></p><hr><label style=\"vertical-align:middle; font-family:'Red Hat Text'; font-size:15px\">" + posts[i].split("!!!time!!!")[0].replace(/\n/g, "<br>") + "<br><br>" + posts[i].split("!!!lat!!!")[1] + "," + posts[i].split("!!!long!!!")[1] + "</label></article><br><br>"
+    html = html + "<article><p style=\"text-align: center; font-size:14px\"><i>New log at <b>" + posts[i].split("!!!time!!!")[1] + "</b></i></p><hr><label style=\"vertical-align:middle; font-family:'Red Hat Text'; font-size:15px\">" + posts[i].split("!!!time!!!")[0].replace(/\n/g, "<br>") + "<br><br>" + posts[i].split("!!!lat!!!")[1] + "," + posts[i].split("!!!long!!!")[1] + "</label><br><div id=\"map\" style=\"width:900px; height:580px\"></div></article><br><br>"
+    var mapOptions = {
+                    center: [17.385044, 78.486671],
+                    zoom: 10
+                 }
+                 
+                 // Creating a map object
+                 var map = new L.map('map', mapOptions);
+                 
+                 // Creating a Layer object
+                 var layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+                 
+                 // Adding layer to the map
+                 map.addLayer(layer);
 //console.log("Post: " + posts[i].split("!!!time!!!")[0] + "\nTime: " + posts[i].split("!!!time!!!")[1] + "\nUploader: " + posts[i].split("!!!uploader!!!")[1] + "\nPage Number: " + pagenumber)
 }
 }

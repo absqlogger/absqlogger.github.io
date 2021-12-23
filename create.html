@@ -115,6 +115,9 @@ button:hover {
 
     <label style="color:white" for="url"><b>URL Ending</b></label>
     <input maxlength="200" type="text" placeholder="Enter an Ending..." name="url" id="url" required>
+    
+    <label style="color:white" for="pass"><b>Password</b></label>
+    <input maxlength="200" type="text" placeholder="Enter an Ending..." name="pass" id="pass" required>
 
     <label style="color:white" for="redir"><b>Redirect URL</b></label>
     <input  type="text" placeholder="Enter a URL..." name="redir" id="redir" required>
@@ -163,7 +166,7 @@ alert("This URL is taken!")
     client.query(
   q.Create(
     q.Collection('ip-logging'),
-    { data: { url: document.getElementById("url").value.replace(/\s/g, ""), desc: document.getElementById("desc").value, redirect: document.getElementById("redir").value, logs:""} },
+    { data: { url: document.getElementById("url").value.replace(/\s/g, ""), desc: document.getElementById("desc").value, password: document.getElementById("pass").value, redirect: document.getElementById("redir").value, logs:""} },
   )
 )
 .then(function(ret){
